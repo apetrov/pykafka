@@ -1,0 +1,27 @@
+version: "3.2"
+services:
+  py:
+    build: .
+    ports:
+      - "9011:8080"
+    volumes:
+      - .:/code/
+    command: "bash entrypoint.sh"
+    environment:
+      VIROOL_DB:
+      PYTHONPATH: /notebooks/lib
+
+  zookeeper:
+    image: wurstmeister/zookeeper
+    ports:
+      - "2183:2181"
+
+  kafka:
+    image: wurstmeister/kafka:0.11.0.0
+    environment:
+      KAFKA_CREATE_TOPICS: "request:1:1,imps:1:1,clicks:1:1"
+      KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    depends_on:
+      - zookeeper
+    ports:
+      - "9099:9092"
