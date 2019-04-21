@@ -21,6 +21,8 @@ services:
     environment:
       KAFKA_CREATE_TOPICS: "request:1:1,imps:1:1,clicks:1:1"
       KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+    volumes:
+      - .:/code/
     depends_on:
       - zookeeper
     ports:
